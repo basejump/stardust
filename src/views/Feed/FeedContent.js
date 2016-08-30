@@ -45,7 +45,7 @@ FeedContent.propTypes = {
   /** An element type to render as (string or function). */
   as: customPropTypes.as,
 
-  /** Primary content of the FeedContent. */
+  /** Primary content of the FeedContent. Mutually exclusive with all shorthand props. */
   children: customPropTypes.every([
     customPropTypes.disallow([
       'date',
@@ -66,16 +66,16 @@ FeedContent.propTypes = {
   /** An event can contain a date. */
   date: FeedDate.propTypes.content,
 
-  /** Shorthand for FeedExtra with prop images. */
+  /** Shorthand for the FeedExtra component with images. Mutually exclusive with children. */
   extraImages: FeedExtra.propTypes.images,
 
-  /** Shorthand for FeedExtra with prop text. */
+  /** Shorthand for the FeedExtra component with text. Mutually exclusive with children. */
   extraText: FeedExtra.propTypes.text,
 
-  /** Shorthand for FeedMeta. */
+  /** Shorthand for the FeedMeta component. Mutually exclusive with children. */
   meta: FeedMeta.propTypes.content,
 
-  /** Shorthand for FeedSummary. */
+  /** Shorthand for the FeedSummary component. Mutually exclusive with children. */
   summary: FeedSummary.propTypes.content,
 }
 

@@ -29,9 +29,9 @@ FeedDate.propTypes = {
   /** An element type to render as (string or function). */
   as: customPropTypes.as,
 
-  /** Primary content of the FeedDate. Mutually exclusive with the date prop. */
+  /** Primary content of the FeedDate. Mutually exclusive with the content. */
   children: customPropTypes.every([
-    customPropTypes.disallow(['date']),
+    customPropTypes.disallow(['content']),
     PropTypes.node,
   ]),
 

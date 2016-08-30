@@ -11,7 +11,7 @@ import {
 import FeedLike from './FeedLike'
 
 function FeedMeta(props) {
-  const { children, className, like, content } = props
+  const { children, className, content, like } = props
   const classes = cx(className, 'meta')
   const rest = getUnhandledProps(FeedMeta, props)
   const ElementType = getElementType(FeedMeta, props)
@@ -38,20 +38,20 @@ FeedMeta.propTypes = {
   /** An element type to render as (string or function). */
   as: customPropTypes.as,
 
-  /** Primary content of the FeedMeta. */
+  /** Primary content of the FeedMeta. Mutually exclusive with content. */
   children: customPropTypes.every([
-    customPropTypes.disallow(['meta']),
+    customPropTypes.disallow(['content', 'like']),
     PropTypes.node,
   ]),
 
   /** Classes that will be added to the FeedMeta className. */
   className: PropTypes.string,
 
-  /** Shorthand for FeedLike. */
-  like: FeedLike.propTypes.content,
-
-  /** Primary content of the FeedMeta. */
+  /** Shorthand for primary content of the FeedMeta. Mutually exclusive with children. */
   content: customPropTypes.shorthand,
+
+  /** Shorthand for the FeedLike component. Mutually exclusive with children. */
+  like: FeedLike.propTypes.content,
 }
 
 export default FeedMeta

@@ -39,22 +39,22 @@ FeedLabel.propTypes = {
   /** An element type to render as (string or function). */
   as: customPropTypes.as,
 
-  /** Primary content of the FeedLabel. */
+  /** Primary content of the FeedLabel. Mutually exclusive with all shorthand props. */
   children: customPropTypes.every([
-    customPropTypes.disallow(['icon', 'image']),
+    customPropTypes.disallow(['content', 'icon', 'image']),
     PropTypes.node,
   ]),
-
-  /** Primary content of the FeedLabel. */
-  content: customPropTypes.shorthand,
 
   /** Classes that will be added to the FeedLabel className. */
   className: PropTypes.string,
 
-  /** An event can contain icon label. */
+  /** Primary content of the FeedLabel. Mutually exclusive with children. */
+  content: customPropTypes.shorthand,
+
+  /** An event can contain icon label. Mutually exclusive with children. */
   icon: customPropTypes.icon,
 
-  /** An event can contain image label. */
+  /** An event can contain image label. Mutually exclusive with children. */
   image: customPropTypes.image,
 }
 

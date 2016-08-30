@@ -44,13 +44,16 @@ FeedExtra.propTypes = {
   /** An element type to render as (string or function). */
   as: customPropTypes.as,
 
-  /** Primary content of the FeedExtra. */
-  children: PropTypes.node,
+  /** Primary content of the FeedExtra. Mutually exclusive with content. */
+  children: customPropTypes.every([
+    customPropTypes.disallow(['images']),
+    PropTypes.node,
+  ]),
 
   /** Classes that will be added to the FeedExtra className. */
   className: PropTypes.string,
 
-  /** An event can contain additional information like a set of images. */
+  /** An event can contain additional information like a set of images. Mutually exclusive with children. */
   images: customPropTypes.every([
     customPropTypes.disallow(['text']),
     PropTypes.oneOfType([
@@ -59,7 +62,9 @@ FeedExtra.propTypes = {
     ]),
   ]),
 
-  /** An event can contain additional information like a set of images. */
+  // TODO: Split text prop to content and text
+
+  /** An event can contain additional text information. */
   text: customPropTypes.every([
     customPropTypes.disallow(['images']),
     PropTypes.oneOfType([

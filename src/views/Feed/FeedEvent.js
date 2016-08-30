@@ -40,7 +40,7 @@ FeedEvent.propTypes = {
   /** An element type to render as (string or function). */
   as: customPropTypes.as,
 
-  /** Primary content of the FeedEvent. */
+  /** Primary content of the FeedEvent. Mutually exclusive with all shorthand props. */
   children: customPropTypes.every([
     customPropTypes.disallow([
       'content',
@@ -58,25 +58,25 @@ FeedEvent.propTypes = {
   /** Classes that will be added to the FeedEvent className. */
   className: PropTypes.string,
 
-  /** Shorthand for FeedDate. */
+  /** Shorthand for FeedDate. Mutually exclusive with children. */
   date: FeedContent.propTypes.date,
 
-  /** Shorthand for FeedExtra with prop images. */
+  /** Shorthand for the FeedExtra component with images. Mutually exclusive with children. */
   extraImages: FeedContent.propTypes.extraImages,
 
-  /** Shorthand for FeedExtra with prop text. */
+  /** Shorthand for the FeedExtra component with content. Mutually exclusive with children. */
   extraText: FeedContent.propTypes.extraText,
 
-  /** An event can contain icon label. */
+  /** An event can contain icon label. Mutually exclusive with children. */
   icon: customPropTypes.icon,
 
-  /** An event can contain image label. */
+  /** An event can contain image label. Mutually exclusive with children. */
   image: customPropTypes.image,
 
-  /** Shorthand for FeedMeta. */
+  /** Shorthand for the FeedMeta component. Mutually exclusive with children. */
   meta: FeedContent.propTypes.meta,
 
-  /** Shorthand for FeedSummary. */
+  /** Shorthand for the FeedSummary component. Mutually exclusive with children. */
   summary: FeedContent.propTypes.summary,
 }
 

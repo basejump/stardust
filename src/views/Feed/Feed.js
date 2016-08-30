@@ -59,7 +59,7 @@ Feed.propTypes = {
   /** An element type to render as (string or function). */
   as: customPropTypes.as,
 
-  /** Primary content of the Feed. */
+  /** Primary content of the Feed. Mutually exclusive with events. */
   children: customPropTypes.every([
     customPropTypes.disallow(['events']),
     PropTypes.node,
@@ -68,7 +68,7 @@ Feed.propTypes = {
   /** Classes that will be added to the Feed className. */
   className: PropTypes.string,
 
-  /** Array of props for FeedEvent. */
+  /** Array of props for FeedEvent. Mutually exclusive with children. */
   events: customPropTypes.every([
     customPropTypes.disallow(['children']),
     PropTypes.arrayOf(PropTypes.shape({
