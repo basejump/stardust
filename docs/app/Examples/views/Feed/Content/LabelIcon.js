@@ -1,29 +1,20 @@
 import React from 'react'
-import { Feed } from 'stardust'
+import { Feed, Icon } from 'stardust'
 
-const LabelImage = () => {
-  return (
-    <Feed>
-      <Feed.Event>
-        <Feed.Label icon='pencil' />
-        <Feed.Content>
-          <Feed.Summary>
-            You posted on your friend <a>Stevie Feliciano's</a> wall.
-            <Feed.Date>Today</Feed.Date>
-          </Feed.Summary>
-        </Feed.Content>
-      </Feed.Event>
+const LabelIcon = () => (
+  <Feed>
+    <Feed.Event>
+      <Feed.Label>
+        <Icon name='pencil' />
+      </Feed.Label>
+      <Feed.Content>
+        <Feed.Summary>
+          You posted on your friend <a>Stevie Feliciano's</a> wall.
+          <Feed.Date>Today</Feed.Date>
+        </Feed.Summary>
+      </Feed.Content>
+    </Feed.Event>
+  </Feed>
+)
 
-      <Feed.Event icon='pencil'>
-        <Feed.Content>
-          <Feed.Summary>
-            You posted on your friend <a>Stevie Feliciano's</a> wall.
-            <Feed.Date>Today</Feed.Date>
-          </Feed.Summary>
-        </Feed.Content>
-      </Feed.Event>
-    </Feed>
-  )
-}
-
-export default LabelImage
+export default LabelIcon

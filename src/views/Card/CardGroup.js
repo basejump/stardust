@@ -1,4 +1,5 @@
 import cx from 'classnames'
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
 
 import {
@@ -27,15 +28,15 @@ function CardGroup(props) {
   const rest = getUnhandledProps(CardGroup, props)
   const ElementType = getElementType(CardGroup, props)
 
-  if(!items) {
+  if (children) {
     return <ElementType {...rest} className={classes}>{children}</ElementType>
   }
 
-  const itemsJSX = items.map(item => {
-    const {childKey, itemProps} = item
+  const itemsJSX = _.map(items, item => {
+    const { childKey, itemProps } = item
     const finalKey = childKey || [itemProps.header, itemProps.description].join('-')
 
-    return <Card {...itemProps} key={finalKey}  />
+    return <Card {...itemProps} key={finalKey} />
   })
 
   return <ElementType {...rest} className={classes}>{itemsJSX}</ElementType>
@@ -71,7 +72,9 @@ CardGroup.propTypes = {
     customPropTypes.disallow(['children']),
     PropTypes.arrayOf(PropTypes.shape({
       childKey: PropTypes.childKey,
-      ...Card.propTypes
+      // do not spread Card propTypes here
+      // it will be undefined due to circular imports
+      // allow the Card to validate the props it is sent
     })),
   ]),
 

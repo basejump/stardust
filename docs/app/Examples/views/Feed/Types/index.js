@@ -10,7 +10,10 @@ const FeedTypesExamples = () => {
         description='A feed'
         examplePath='views/Feed/Types/Basic'
       />
-      <ComponentExample examplePath='views/Feed/Types/Props' />
+      <ComponentExample
+        description='You can also pass an array of events to generate the markup'
+        examplePath='views/Feed/Types/EventsProp'
+      />
     </ExampleSection>
   )
 }

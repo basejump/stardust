@@ -1,5 +1,5 @@
-import { PropTypes, isValidElement, PropTypes } from 'react'
-import _ from 'lodash'
+import { PropTypes, isValidElement } from 'react'
+import _ from 'lodash/fp'
 
 const typeOf = (...args) => Object.prototype.toString.call(...args)
 
@@ -20,15 +20,15 @@ export const elementOfType = (type) => {
   // propValue, key, componentName, location, propFullName
   // propValue then is the array/object
   return (props, propName, componentName) => {
-    if (!(_.isFunction(type) || _.isString(type))) {
+    if (!(typeof type === 'function' || typeof type === 'string')) {
       throw new Error([
         'Invalid argument supplied to elementOfType, expected a string or function.',
         `See \`${propName}\` prop in \`${componentName}\`.`,
       ].join(' '))
     }
     const propValue = props[propName]
-    const typeName = _.isString(type) ? type : _.get(type, '_meta.name', type.constructor.name)
-    const propType = _.isString(propValue) ? propValue : _.get(propValue, 'type')
+    const typeName = typeof type === 'string' ? type : _.get(type, '_meta.name', type.constructor.name)
+    const propType = typeof propValue === 'string' ? propValue : _.get(propValue, 'type')
 
     if (!isValidElement(propValue)) {
       return new Error(
@@ -36,7 +36,7 @@ export const elementOfType = (type) => {
       )
     }
 
-    if (typeOf(propValue) !== typeOf(type) || !_.isMatch(propValue, { type })) {
+    if (typeOf(propValue) !== typeOf(type) || !_.isMatch({ type }, propValue)) {
       return new Error(
         `\`${propName}\` prop in \`${componentName}\` must be of type \`${typeName}\`, got: ${typeOf(propValue)}.`,
       )
@@ -50,24 +50,29 @@ export const elementOfType = (type) => {
  */
 export const disallow = disallowedProps => {
   return (props, propName, componentName) => {
-    if (!_.isArray(disallowedProps)) {
+    if (!Array.isArray(disallowedProps)) {
       throw new Error([
         'Invalid argument supplied to disallow, expected an instance of array.'
           ` See \`${propName}\` prop in \`${componentName}\`.`,
       ].join(''))
     }
 
-    // mutually exclusive
-    const disallowed = disallowedProps.reduce((acc, exclusive) => {
-      if (!_.isUndefined(props[propName]) && !_.isUndefined(props[exclusive])) {
-        return [...acc, exclusive]
+    // skip if prop is undefined
+    if (props[propName] === undefined) return
+
+    // find disallowed props with values
+    const disallowed = disallowedProps.reduce((acc, disallowedProp) => {
+      if (props[disallowedProp] !== undefined) {
+        return [...acc, disallowedProp]
       }
       return acc
     }, [])
 
-    if (!_.isEmpty(disallowed)) {
+
+    if (disallowed.length > 0) {
+      console.log(propName, props[propName], _.flattenDeep(_.zip(disallowed, _.map(d => props[d])(disallowed))))
       return new Error([
-        `\`${propName}\` prop in \`${componentName}\` conflicts with props: \`${disallowed.join('`, `')}\`.`,
+        `Prop \`${propName}\` in \`${componentName}\` conflicts with props: \`${disallowed.join('`, `')}\`.`,
         'They cannot be defined together, choose one or the other.',
       ].join(' '))
     }
@@ -80,21 +85,24 @@ export const disallow = disallowedProps => {
  */
 export const every = (validators) => {
   return (props, propName, componentName, ...rest) => {
-    if (!_.isArray(validators)) {
+    if (!Array.isArray(validators)) {
       throw new Error([
         'Invalid argument supplied to every, expected an instance of array.',
         `See \`${propName}\` prop in \`${componentName}\`.`,
       ].join(' '))
     }
 
-    const errors = _.compact(_.map(validators, validator => {
-      if (!_.isFunction(validator)) {
-        throw new Error(
-          `every() argument "validators" should contain functions, found: ${typeOf(validator)}.`
-        )
-      }
-      return validator(props, propName, componentName, ...rest)
-    }))
+    const errors = _.flow(
+      _.map(validator => {
+        if (typeof validator !== 'function') {
+          throw new Error(
+            `every() argument "validators" should contain functions, found: ${typeOf(validator)}.`
+          )
+        }
+        return validator(props, propName, componentName, ...rest)
+      }),
+      _.compact
+    )(validators)
 
     // we can only return one error at a time
     return errors[0]
@@ -107,7 +115,7 @@ export const every = (validators) => {
  */
 export const some = (validators) => {
   return (props, propName, componentName, ...rest) => {
-    if (!_.isArray(validators)) {
+    if (!Array.isArray(validators)) {
       throw new Error([
         'Invalid argument supplied to some, expected an instance of array.',
         `See \`${propName}\` prop in \`${componentName}\`.`,
@@ -139,10 +147,12 @@ export const some = (validators) => {
  */
 export const givenProps = (propsShape, validator) => {
   return (props, propName, componentName, ...rest) => {
-    const shouldValidate = _.every(propsShape, (val, key) => {
+    throw new Error('TODO val, key is not supported in fp')
+    const shouldValidate = _.every((val, key) => {
+      console.log('givenProps', val, key)
       // require propShape validators to pass or prop values to match
-      return _.isFunction(val) ? !val(props, key, componentName, ...rest) : val === props[propName]
-    })
+      return typeof val === 'function' ? !val(props, key, componentName, ...rest) : val === props[propName]
+    })(propsShape)
 
     if (!shouldValidate) return
 
@@ -153,7 +163,7 @@ export const givenProps = (propsShape, validator) => {
       ].join(' '))
     }
 
-    if (!_.isFunction(validator)) {
+    if (typeof validator !== 'function') {
       throw new Error([
         'Invalid argument supplied to givenProps, expected a function.',
         `See \`${propName}\` prop in \`${componentName}\`.`,
@@ -166,8 +176,8 @@ export const givenProps = (propsShape, validator) => {
       // poor mans shallow pretty print, prevents JSON circular reference errors
       const prettyProps = `{ ${_.map(_.pick(props, _.keys(propsShape)), (val, key) => {
         let value = val
-        if (_.isString(val)) value = `"${val}"`
-        else if (_.isArray(val)) value = `[${val.join(', ')}]`
+        if (typeof val === 'string') value = `"${val}"`
+        else if (Array.isArray(val)) value = `[${val.join(', ')}]`
         else if (_.isObject(val)) value = '{...}'
 
         return `${key}: ${value}`
@@ -185,18 +195,18 @@ export const givenProps = (propsShape, validator) => {
  */
 export const demand = (requiredProps) => {
   return (props, propName, componentName) => {
-    if (!_.isArray(requiredProps)) {
+    if (!Array.isArray(requiredProps)) {
       throw new Error([
         'Invalid `requiredProps` argument supplied to require, expected an instance of array.'
           ` See \`${propName}\` prop in \`${componentName}\`.`,
       ].join(''))
     }
 
-    // do not require requiredProps if the prop does not exist in props
-    if (_.isUndefined(props, propName)) return
+    // skip if prop is undefined
+    if (props[propName] === undefined) return
 
-    const missingRequired = requiredProps.filter(required => _.isUndefined(props, required))
-    if (!_.isEmpty(missingRequired)) {
+    const missingRequired = requiredProps.filter(requiredProp => props[requiredProp] === undefined)
+    if (missingRequired.length > 0) {
       return new Error(
         `\`${propName}\` prop in \`${componentName}\` requires props: \`${missingRequired.join('`, `')}\`.`,
       )
@@ -211,30 +221,42 @@ export const demand = (requiredProps) => {
  */
 export const deprecate = (help, validator) => {
   return (props, propName, componentName, ...args) => {
-    // do not show deprecation warnings in production
-    if (process.env.NODE_ENV === 'production') return
-
-    if (!_.isString(help)) {
+    if (typeof help !== 'string') {
       throw new Error([
         'Invalid `help` argument supplied to deprecate, expected a string.',
         `See \`${propName}\` prop in \`${componentName}\`.`,
       ].join(' '))
     }
 
-    /* eslint-disable no-console */
-    console.error(`The \`${propName}\` prop in \`${componentName}\` is deprecated. ${help}`)
-    /* eslint-enable no-console */
+    // skip if prop is undefined
+    if (props[propName] === undefined) return
 
-    if (validator && !_.isFunction(validator)) {
-      throw new Error([
-        'Invalid argument supplied to deprecate, expected a function.',
-        `See \`${propName}\` prop in \`${componentName}\`.`,
-      ].join(' '))
+    // deprecation error and help
+    const error = new Error(`The \`${propName}\` prop in \`${componentName}\` is deprecated.`)
+    if (help) error.message += ` ${help}`
+
+    // add optional validation error message
+    if (validator) {
+      if (typeof validator === 'function') {
+        const validationError = validator(props, propName, componentName, ...args)
+        if (validationError) {
+          error.message = `${error.message} ${validationError.message}`
+        }
+      } else {
+        throw new Error([
+          'Invalid argument supplied to deprecate, expected a function.',
+          `See \`${propName}\` prop in \`${componentName}\`.`,
+        ].join(' '))
+      }
     }
 
-    validator(props, propName, componentName, ...args)
+    return error
   }
 }
+
+// ----------------------------------------
+// Prop specific types
+// ----------------------------------------
 
 /**
  * Ensure a prop conforms to shorthand prop standards.
@@ -248,17 +270,40 @@ export const shorthand = (...args) => every([
  * Ensure a prop conforms to icon prop standards.
  */
 export const icon = (...args) => every([
-  disallow(['children']),
-  PropTypes.node,
+  disallow(['children', 'image']),
+  PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+    PropTypes.element,
+  ]),
 ])(...args)
 
 /**
  * Ensure a prop conforms to icon prop standards.
  */
 export const image = (...args) => every([
-  disallow(['children']),
-  PropTypes.node,
+  disallow(['children', 'icon']),
+  PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+    PropTypes.element,
+  ]),
 ])(...args)
+
+/**
+ * Ensure a prop conforms to children prop standards.
+ */
+export const children = (Component) => (props, ...rest) => {
+  const disallowedProps = _.flow(
+    _.pickBy(checker => checker === shorthand || checker === icon || checker === image),
+    _.keys,
+  )(Component.propTypes)
+
+  return every([
+    disallow(disallowedProps),
+    PropTypes.node,
+  ])(props, ...rest)
+}
 
 /**
  * Ensure a prop can be used as a React key in an array of child components.

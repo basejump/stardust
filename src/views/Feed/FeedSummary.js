@@ -41,10 +41,7 @@ FeedSummary.propTypes = {
   as: customPropTypes.as,
 
   /** Primary content of the FeedSummary. Mutually exclusive with content */
-  children: customPropTypes.every([
-    customPropTypes.disallow(['content']),
-    PropTypes.node,
-  ]),
+  children: customPropTypes.children(FeedSummary),
 
   /** Classes that will be added to the FeedSummary className. */
   className: PropTypes.string,

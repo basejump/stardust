@@ -49,7 +49,8 @@ const Basic = () => {
       <Event>
         <Label image='http://semantic-ui.com/images/avatar/small/joe.jpg' />
         <Content>
-          <Summary date='3 days ago'>
+          <Summary>
+            <Date>3 days ago</Date>
             <a>Joe Henderson</a> posted on his page
           </Summary>
           <Extra text>
@@ -64,7 +65,8 @@ const Basic = () => {
       <Event>
         <Label image='http://semantic-ui.com/images/avatar/small/justen.jpg' />
         <Content>
-          <Summary date='4 days ago'>
+          <Summary>
+            <Date>4 days ago</Date>
             <a>Justen Kitsune</a> added <a>2 new photos</a> of you
           </Summary>
           <Extra images>

@@ -73,7 +73,9 @@ ItemGroup.propTypes = {
     customPropTypes.disallow(['children']),
     PropTypes.arrayOf(PropTypes.shape({
       childKey: customPropTypes.childKey,
-      ...Item.propTypes
+      // do not spread Item propTypes here
+      // it will be undefined due to circular imports
+      // allow the Item to validate the props it is sent
     })),
   ]),
 

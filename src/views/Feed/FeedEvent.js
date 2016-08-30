@@ -41,19 +41,7 @@ FeedEvent.propTypes = {
   as: customPropTypes.as,
 
   /** Primary content of the FeedEvent. Mutually exclusive with all shorthand props. */
-  children: customPropTypes.every([
-    customPropTypes.disallow([
-      'content',
-      'date',
-      'extraImages',
-      'extraText',
-      'icon',
-      'image',
-      'meta',
-      'summary',
-    ]),
-    PropTypes.node,
-  ]),
+  children: customPropTypes.children(FeedEvent),
 
   /** Classes that will be added to the FeedEvent className. */
   className: PropTypes.string,
@@ -79,7 +67,5 @@ FeedEvent.propTypes = {
   /** Shorthand for the FeedSummary component. Mutually exclusive with children. */
   summary: FeedContent.propTypes.summary,
 }
-
-console.log(FeedEvent.propTypes)
 
 export default FeedEvent

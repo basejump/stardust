@@ -1,53 +1,54 @@
 import React from 'react'
 import { Feed } from 'stardust'
 
-const { Content, Event, Extra, Label, Like, Meta, Summary, User } = Feed
-
 const SizeLarge = () => {
   return (
     <Feed size='large'>
-      <Event>
-        <Label image='http://semantic-ui.com/images/avatar/small/elliot.jpg' />
-        <Content>
-          <Summary date='1 Hour Ago'>
-            <User>Elliot Fu</User> added you as a friend
-          </Summary>
-          <Meta>
-            <Like icon='like'>4 Likes</Like>
-          </Meta>
-        </Content>
-      </Event>
+      <Feed.Event>
+        <Feed.Label image='http://semantic-ui.com/images/avatar/small/elliot.jpg' />
+        <Feed.Content>
+          <Feed.Summary>
+            <Feed.Date>1 Hour Ago</Feed.Date>
+            <Feed.User>Elliot Fu</Feed.User> added you as a friend
+          </Feed.Summary>
+          <Feed.Meta>
+            <Feed.Like icon='like'>4 Likes</Feed.Like>
+          </Feed.Meta>
+        </Feed.Content>
+      </Feed.Event>
 
-      <Event>
-        <Label icon='pencil' />
-        <Content>
-          <Summary date='3 days ago'>
+      <Feed.Event>
+        <Feed.Label icon='pencil' />
+        <Feed.Content>
+          <Feed.Summary>
+            <Feed.Date>3 days ago</Feed.Date>
             You submitted a new post to the page
-          </Summary>
-          <Extra text>
+          </Feed.Summary>
+          <Feed.Extra text>
             I'm having a BBQ this weekend. Come by around 4pm if you can.
-          </Extra>
-          <Meta>
-            <Like>11 Likes</Like>
-          </Meta>
-        </Content>
-      </Event>
+          </Feed.Extra>
+          <Feed.Meta>
+            <Feed.Like>11 Likes</Feed.Like>
+          </Feed.Meta>
+        </Feed.Content>
+      </Feed.Event>
 
-      <Event>
-        <Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
-        <Content date='4 days ago'>
-          <Summary>
+      <Feed.Event>
+        <Feed.Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
+        <Feed.Content>
+          <Feed.Date>4 days ago</Feed.Date>
+          <Feed.Summary>
             <a>Helen Troy</a> added <a>2 new illustrations</a>
-          </Summary>
+          </Feed.Summary>
 
-          <Extra images>
+          <Feed.Extra images>
             <a><img src='http://semantic-ui.com/images/wireframe/image.png' /></a>
             <a><img src='http://semantic-ui.com/images/wireframe/image.png' /></a>
-          </Extra>
+          </Feed.Extra>
 
-          <Meta like='1 Like' />
-        </Content>
-      </Event>
+          <Feed.Meta like='1 Like' />
+        </Feed.Content>
+      </Feed.Event>
     </Feed>
   )
 }

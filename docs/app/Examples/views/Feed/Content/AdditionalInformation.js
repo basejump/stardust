@@ -2,79 +2,84 @@ import _ from 'lodash'
 import React from 'react'
 import { Feed } from 'stardust'
 
-const { Content, Event, Extra, Label, Summary } = Feed
 const images = _.times(2, () => 'http://semantic-ui.com/images/wireframe/image.png')
 
 const AdditionalInformation = () => {
   return (
     <Feed>
-      <Event>
-        <Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
-        <Content date='3 days ago'>
-          <Summary>
+      <Feed.Event>
+        <Feed.Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
+        <Feed.Content>
+          <Feed.Date>3 days ago</Feed.Date>
+          <Feed.Summary>
             <a>Helen Troy</a> added 2 photos
-          </Summary>
-          <Extra images>
+          </Feed.Summary>
+          <Feed.Extra images>
             <a><img src='http://semantic-ui.com/images/wireframe/image.png' /></a>
             <a><img src='http://semantic-ui.com/images/wireframe/image.png' /></a>
-          </Extra>
-        </Content>
-      </Event>
+          </Feed.Extra>
+        </Feed.Content>
+      </Feed.Event>
 
-      <Event>
-        <Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
-        <Content date='3 days ago'>
-          <Summary>
+      <Feed.Event>
+        <Feed.Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
+        <Feed.Content>
+          <Feed.Date>3 days ago</Feed.Date>
+          <Feed.Summary>
             <a>Helen Troy</a> added 2 photos
-          </Summary>
-          <Extra images={images} />
-        </Content>
-      </Event>
+          </Feed.Summary>
+          <Feed.Extra images={images} />
+        </Feed.Content>
+      </Feed.Event>
 
-      <Event>
-        <Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
-        <Content date='3 days ago'>
-          <Summary>
+      <Feed.Event>
+        <Feed.Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
+        <Feed.Content>
+          <Feed.Date>3 days ago</Feed.Date>
+          <Feed.Summary>
             <a>Helen Troy</a> added 2 photos
-          </Summary>
-          <Extra images={images} />
-        </Content>
-      </Event>
+          </Feed.Summary>
+          <Feed.Extra images={images} />
+        </Feed.Content>
+      </Feed.Event>
 
-      <Event>
-        <Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
-        <Content date='3 days ago'>
-          <Summary>
+      <Feed.Event>
+        <Feed.Label image='http://semantic-ui.com/images/avatar/small/helen.jpg' />
+        <Feed.Content>
+          <Feed.Date>3 days ago</Feed.Date>
+          <Feed.Summary>
             <a>Helen Troy</a> added 2 photos
-          </Summary>
-          <Extra images>
+          </Feed.Summary>
+          <Feed.Extra images>
             <a><img src='http://semantic-ui.com/images/wireframe/image.png' /></a>
             <a><img src='http://semantic-ui.com/images/wireframe/image.png' /></a>
-          </Extra>
-        </Content>
-      </Event>
+          </Feed.Extra>
+        </Feed.Content>
+      </Feed.Event>
 
-      <Event>
-        <Label image='http://semantic-ui.com/images/avatar/small/laura.jpg' />
-        <Content date='3 days ago'>
-          <Summary>
+      <Feed.Event>
+        <Feed.Label image='http://semantic-ui.com/images/avatar/small/laura.jpg' />
+        <Feed.Content>
+          <Feed.Date>3 days ago</Feed.Date>
+          <Feed.Summary>
             <a>Laura Faucet</a> created a post
-          </Summary>
-          <Extra text>
+          </Feed.Summary>
+          <Feed.Extra text>
             Have you seen what's going on in Israel? Can you believe it.
-          </Extra>
-        </Content>
-      </Event>
+          </Feed.Extra>
+        </Feed.Content>
+      </Feed.Event>
 
-      <Event>
-        <Label image='http://semantic-ui.com/images/avatar/small/laura.jpg' />
-        <Content date='3 days ago'>
-          <Summary>
+      <Feed.Event>
+        <Feed.Label image='http://semantic-ui.com/images/avatar/small/laura.jpg' />
+        <Feed.Content>
+          <Feed.Date>3 days ago</Feed.Date>
+          <Feed.Summary>
             <a>Laura Faucet</a> created a post
-          </Summary>
-          <Extra text="Have you seen what's going on in Israel? Can you believe it." />
-        </Content>
-      </Event>
+          </Feed.Summary>
+          <Feed.Extra text="Have you seen what's going on in Israel? Can you believe it." />
+        </Feed.Content>
+      </Feed.Event>
     </Feed>
   )
 }

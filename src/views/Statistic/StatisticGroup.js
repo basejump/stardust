@@ -66,7 +66,9 @@ StatisticGroup.propTypes = {
     customPropTypes.disallow(['children']),
     PropTypes.arrayOf(PropTypes.shape({
       childKey: customPropTypes.childKey,
-      ...Statistic.propTypes
+      // do not spread Statistic propTypes here
+      // it will be undefined due to circular imports
+      // allow the Statistic to validate the props it is sent
     })),
   ]),
 

@@ -28,8 +28,8 @@ function FeedContent(props) {
       {createShorthand(FeedDate, val => ({ content: val }), date)}
       {createShorthand(FeedSummary, val => ({ content: val }), summary)}
       {content}
-      {createShorthand(FeedExtra, val => ({ images: val }), extraImages)}
       {createShorthand(FeedExtra, val => ({ text: val }), extraText)}
+      {createShorthand(FeedExtra, val => ({ images: val }), extraImages)}
       {createShorthand(FeedMeta, val => ({ content: val }), meta)}
     </ElementType>
   )
@@ -60,8 +60,8 @@ FeedContent.propTypes = {
   /** Classes that will be added to the FeedContent className. */
   className: PropTypes.string,
 
-  /** Deprecated. Use date, extraText, extraImages, meta, and summary instead. */
-  content: customPropTypes.deprecate('Use date, extraText, extraImages, meta, and summary instead.'),
+  /** Shorthand for children. */
+  content: customPropTypes.shorthand,
 
   /** An event can contain a date. */
   date: FeedDate.propTypes.content,
