@@ -9,12 +9,12 @@ import {
 } from '../../lib'
 
 function FeedUser(props) {
-  const { children, className, user } = props
+  const { children, className, content } = props
   const classes = cx(className, 'user')
   const rest = getUnhandledProps(FeedUser, props)
   const ElementType = getElementType(FeedUser, props)
 
-  return <ElementType {...rest} className={classes}>{children || user}</ElementType>
+  return <ElementType {...rest} className={classes}>{children || content}</ElementType>
 }
 
 FeedUser._meta = {
@@ -36,11 +36,8 @@ FeedUser.propTypes = {
   /** Classes that will be added to the FeedUser className. */
   className: PropTypes.string,
 
-  /** Shorthand for primary content of the FeedUser. Mutually exclusive with the children prop. */
-  user: customPropTypes.every([
-    customPropTypes.disallow(['children']),
-    PropTypes.string,
-  ]),
+  /** Shorthand for primary content of the FeedUser. */
+  content: customPropTypes.shorthand,
 }
 
 FeedUser.defaultProps = {

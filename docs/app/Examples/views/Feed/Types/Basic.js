@@ -41,9 +41,7 @@ const Basic = () => {
       <Event>
         <Label image='http://semantic-ui.com/images/avatar/small/jenny.jpg' />
         <Content>
-          <Summary date='2 Days Ago'>
-            <User>Jenny Hess</User> added you as a friend
-          </Summary>
+          <Summary date='2 Days Ago' user='Jenny Hess' content='add you as a friend' />
           <Meta like='8 Likes' />
         </Content>
       </Event>

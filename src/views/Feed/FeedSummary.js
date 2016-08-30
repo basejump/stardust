@@ -9,17 +9,23 @@ import {
   META,
 } from '../../lib'
 import FeedDate from './FeedDate'
+import FeedUser from './FeedUser'
 
 function FeedSummary(props) {
-  const { children, className, date, summary } = props
+  const { children, className, content, date, user } = props
   const classes = cx(className, 'summary')
   const rest = getUnhandledProps(FeedSummary, props)
   const ElementType = getElementType(FeedSummary, props)
 
+  if (children) {
+    return <ElementType {...rest} className={classes}>{children}</ElementType>
+  }
+
   return (
     <ElementType {...rest} className={classes}>
-      {children || summary }
-      {createShorthand(FeedDate, val => ({ date: val }), date)}
+      {createShorthand(FeedUser, val => ({ content: val }), user)}
+      {content}
+      {createShorthand(FeedDate, val => ({ content: val }), date)}
     </ElementType>
   )
 }
@@ -43,13 +49,14 @@ FeedSummary.propTypes = {
   /** Classes that will be added to the FeedSummary className. */
   className: PropTypes.string,
 
-  /** An event summary can contain a date. */
-  date: PropTypes.string,
+  /** Shorthand for children */
+  content: customPropTypes.shorthand,
 
-  summary: customPropTypes.every([
-    customPropTypes.disallow(['children']),
-    PropTypes.string,
-  ]),
+  /** An event summary can contain a date. */
+  date: customPropTypes.shorthand,
+
+  /** Shorthand for the FeedUser component. Mutually exclusive with children. */
+  user: customPropTypes.shorthand,
 }
 
 export default FeedSummary

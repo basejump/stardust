@@ -72,14 +72,8 @@ Feed.propTypes = {
   events: customPropTypes.every([
     customPropTypes.disallow(['children']),
     PropTypes.arrayOf(PropTypes.shape({
-      childKey: PropTypes.string,
-      date: PropTypes.string,
-      image: PropTypes.node,
-      icon: PropTypes.node,
-      meta: PropTypes.string,
-      summary: PropTypes.string,
-      extraText: PropTypes.string,
-      extraImages: PropTypes.arrayOf(PropTypes.node),
+      childKey: PropTypes.childKey,
+      ...FeedEvent.propTypes,
     })),
   ]),
 
