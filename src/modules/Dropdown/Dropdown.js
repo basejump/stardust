@@ -73,7 +73,7 @@ export default class Dropdown extends Component {
         { children: PropTypes.any.isRequired },
         React.PropTypes.element.isRequired,
       ),
-      customPropTypes.ofComponentTypes(['DropdownMenu']),
+      PropTypes.arrayOf(customPropTypes.elementOfType(DropdownMenu)),
     ]),
 
     /** Current value or value array if multiple. Creates a controlled component. */
