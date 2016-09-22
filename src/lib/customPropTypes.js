@@ -16,9 +16,6 @@ export const as = (...args) => PropTypes.oneOfType([
  * @param {String[]} type An HTML tag name string or component function.
  */
 export const elementOfType = (type) => {
-  // TODO: handle use in arrayOf/objectOf where args are
-  // propValue, key, componentName, location, propFullName
-  // propValue then is the array/object
   return (props, propName, componentName) => {
     if (!(typeof type === 'function' || typeof type === 'string')) {
       throw new Error([
@@ -28,7 +25,6 @@ export const elementOfType = (type) => {
     }
     const propValue = props[propName]
     const typeName = typeof type === 'string' ? type : _.get(type, '_meta.name', type.constructor.name)
-    const propType = typeof propValue === 'string' ? propValue : _.get(propValue, 'type')
 
     if (!isValidElement(propValue)) {
       return new Error(
@@ -70,7 +66,6 @@ export const disallow = disallowedProps => {
 
 
     if (disallowed.length > 0) {
-      console.log(propName, props[propName], _.flattenDeep(_.zip(disallowed, _.map(d => props[d])(disallowed))))
       return new Error([
         `Prop \`${propName}\` in \`${componentName}\` conflicts with props: \`${disallowed.join('`, `')}\`.`,
         'They cannot be defined together, choose one or the other.',
@@ -147,15 +142,6 @@ export const some = (validators) => {
  */
 export const givenProps = (propsShape, validator) => {
   return (props, propName, componentName, ...rest) => {
-    throw new Error('TODO val, key is not supported in fp')
-    const shouldValidate = _.every((val, key) => {
-      console.log('givenProps', val, key)
-      // require propShape validators to pass or prop values to match
-      return typeof val === 'function' ? !val(props, key, componentName, ...rest) : val === props[propName]
-    })(propsShape)
-
-    if (!shouldValidate) return
-
     if (!_.isPlainObject(propsShape)) {
       throw new Error([
         'Invalid argument supplied to givenProps, expected an object.',
@@ -170,17 +156,26 @@ export const givenProps = (propsShape, validator) => {
       ].join(' '))
     }
 
+    const shouldValidate = _.keys(propsShape).every(key => {
+      const val = propsShape[key]
+      // require propShape validators to pass or prop values to match
+      return typeof val === 'function' ? !val(props, key, componentName, ...rest) : val === props[propName]
+    })
+
+    if (!shouldValidate) return
+
     const error = validator(props, propName, componentName, ...rest)
 
     if (error) {
       // poor mans shallow pretty print, prevents JSON circular reference errors
-      const prettyProps = `{ ${_.map(_.pick(props, _.keys(propsShape)), (val, key) => {
-        let value = val
-        if (typeof val === 'string') value = `"${val}"`
-        else if (Array.isArray(val)) value = `[${val.join(', ')}]`
-        else if (_.isObject(val)) value = '{...}'
+      const prettyProps = `{ ${_.keys(_.pick(_.keys(propsShape), props)).map(key => {
+        const val = props[key]
+        let renderedValue = val
+        if (typeof val === 'string') renderedValue = `"${val}"`
+        else if (Array.isArray(val)) renderedValue = `[${val.join(', ')}]`
+        else if (_.isObject(val)) renderedValue = '{...}'
 
-        return `${key}: ${value}`
+        return `${key}: ${renderedValue}`
       }).join(', ')} }`
 
       error.message = `Given props ${prettyProps}: ${error.message}`
